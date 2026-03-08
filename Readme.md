@@ -108,7 +108,7 @@ In the `logs/` folder, create a file called `meetings_log.md` and paste this:
 ## Meeting 1
 Date: [fill in today's date]
 Attendees: Jeevan, Sri Lakshmi, Deepesh
-Discussion: Agreed on project topic (Spotify dataset), divided tasks, set up GitHub repo and SourceHut mailing list
+Discussion: Agreed on project topic (Spotify dataset), divided tasks, set up GitHub repo and Microsoft Teams workspace using personal emails
 Progress: All members set up their environments
 Next steps: Jeevan downloads dataset and sets up HDFS. Sri Lakshmi starts cleaning. Deepesh installs dependencies.
 
@@ -126,13 +126,14 @@ Next steps: [fill in]
 
 ### A5 — Set Up Microsoft Teams (for team communication)
 
-Teams is free with any university or Microsoft account and is used for all team discussions, file sharing, and meeting logs.
+Teams is free with a personal Microsoft account. Use personal emails — university emails are blocked from creating teams with channels.
 
-1. Go to **https://teams.microsoft.com** and sign in with your university email (or create a free Microsoft account at microsoft.com if you don't have one)
-2. Click **Teams** on the left sidebar → **Join or create a team**
-3. Click **Create team** → **From scratch** → **Private**
-4. Name it: `Spotify Music Analysis - Phase 1`
-5. Click **Add members** and invite Sri Lakshmi and Deepesh using their university emails
+1. Go to **https://teams.microsoft.com** and sign in with your **personal Microsoft account** (e.g. outlook.com or hotmail.com). If you don't have one, create a free account at **https://account.microsoft.com**
+2. Make sure you are on **Microsoft Teams (free)** — not the work/school version. If it keeps redirecting to a school account, open a private/incognito browser window and sign in fresh with your personal account
+3. Click **Teams** on the left sidebar → **Join or create a team**
+4. Click **Create team** → **From scratch** → **Private**
+5. Name it: `Spotify Music Analysis - Phase 1`
+6. Click **Add members** and invite Sri Lakshmi and Deepesh using their **personal Microsoft emails** — ask them for their outlook.com or hotmail.com address beforehand
 
 ---
 
