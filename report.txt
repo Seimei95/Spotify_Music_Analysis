@@ -1,0 +1,319 @@
+================================================================
+   SPOTIFY TRACKS DATASET — PHASE 1
+   Section 4: Data Cleaning
+   Student: Sri Lakshmi
+   Email: svaddi3@buffalo.edu
+   Task: Task 4 — Data Cleaning (25 Points)
+   Notebook: task4_cleaning.ipynb
+   Input: spotify_tracks.csv
+   Output: spotify_cleaned.csv
+================================================================
+
+
+================================================================
+4. DATA CLEANING
+================================================================
+
+For my part of the project, I was in charge of cleaning the
+raw Spotify dataset before passing it on to my teammates.
+The file I received had 114,000 rows and 20 columns. I ran
+6 cleaning steps in Jupyter Notebook using pandas, matplotlib,
+and seaborn. Here is exactly what I did in each step.
+
+
+----------------------------------------------------------------
+OPERATION 1 — Load and Inspect the Dataset
+----------------------------------------------------------------
+
+What I did:
+I loaded spotify_tracks.csv into pandas and checked if there
+was an 'Unnamed: 0' column. This column sometimes appears when
+a CSV is saved with the index accidentally turned on — it is
+just row numbers and is useless. I dropped it. Then I printed
+the shape, column types, and first 5 rows to see what the
+data looked like before touching anything.
+
+Code:
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    df = pd.read_csv('spotify_tracks.csv')
+    if 'Unnamed: 0' in df.columns:
+        df = df.drop(columns=['Unnamed: 0'])
+        print("Dropped unnamed index column")
+
+    print("Shape:", df.shape)
+    print("\nData Types:")
+    print(df.dtypes)
+    print("\nFirst 5 rows:")
+    df.head()
+
+Output:
+    >> Dropped unnamed index column
+    >> Shape: (114000, 20)
+
+The data loaded fine. 114,000 rows, 20 columns. Column types
+looked correct — strings for names and genres, numbers for
+audio features, boolean for explicit. Nothing suspicious.
+
+
+----------------------------------------------------------------
+OPERATION 2 — Handle Missing Values
+----------------------------------------------------------------
+
+What I did:
+I checked every column for null values and printed the counts.
+Then I removed rows where artists, track_name, or track_genre
+was empty because those three columns are essential — without
+them a track cannot be used in any part of our analysis.
+
+Code:
+    print("Missing values per column:")
+    print(df.isnull().sum())
+
+    rows_before = len(df)
+    df = df.dropna(subset=['artists', 'track_name', 'track_genre'])
+    rows_after = len(df)
+
+    print(f"\nRows removed: {rows_before - rows_after}")
+    print(f"Rows remaining: {rows_after}")
+
+Output:
+    >> artists = 1, album_name = 1, track_name = 1
+    >> All other columns = 0
+    >> Rows removed: 1
+    >> Rows remaining: 113,999
+
+Honestly only 1 row had missing values. The dataset was really
+well maintained. We lost basically nothing here.
+
+
+----------------------------------------------------------------
+OPERATION 3 — Duplicate Analysis and Removal
+----------------------------------------------------------------
+
+What I did:
+I checked for duplicates in two ways — first by track_id, then
+by exact row match across all columns. I only removed exact
+duplicate rows. I kept the track_id duplicates on purpose.
+
+Why Because in this dataset the same song can appear under
+multiple genres. For example, one song might show up under
+'pop', 'dance-pop', and 'electropop' — three rows, same
+track_id, but different genre. Those are valid records.
+Only rows that are 100% identical in every single column are
+true duplicates worth deleting.
+
+Code:
+    dup_id = df.duplicated(subset='track_id').sum()
+    dup_exact = df.duplicated().sum()
+
+    print(f"Duplicate track_id entries: {dup_id}")
+    print(f"Exact duplicate rows: {dup_exact}")
+    print("Note: track_id duplicates may represent the same song")
+    print("appearing in multiple genres or playlists.")
+    print("Therefore, we only remove exact duplicate rows.")
+
+    rows_before = len(df)
+    df = df.drop_duplicates()
+    rows_after = len(df)
+
+    print(f"\nRows removed: {rows_before - rows_after}")
+    print(f"Rows remaining: {rows_after}")
+
+Output:
+    >> Duplicate track_id entries: 24,259
+    >> Exact duplicate rows: 450
+    >> Rows removed: 450
+    >> Rows remaining: 113,549
+
+If I had blindly deleted all track_id duplicates I would have
+lost 24,259 valid rows. Checking both types first was the
+right call.
+
+
+----------------------------------------------------------------
+OPERATION 4 — Fix Data Types and Convert explicit Column
+----------------------------------------------------------------
+
+What I did:
+Two changes here. First, I converted duration_ms to
+duration_minutes by dividing by 60,000. A value like 3.84
+minutes is way easier to understand than 230,666 milliseconds.
+I then dropped the original duration_ms column.
+
+Second, I converted the explicit column to proper boolean
+using .astype(bool) because it was stored as 0s and 1s which
+is not the correct type for a True/False field.
+
+Code:
+    df['duration_minutes'] = (df['duration_ms'] / 60000).round(2)
+    df = df.drop(columns=['duration_ms'])
+
+    df['explicit'] = df['explicit'].astype(bool)
+
+    print("New column: duration_minutes")
+    print(df[['duration_minutes', 'explicit']].head())
+    print("\nexplicit value counts:", df['explicit'].value_counts())
+
+Output:
+    >> duration_minutes sample: 3.84, 2.49, 3.51, 3.37, 3.31
+    >> explicit:  False = 103,831  |  True = 9,718
+
+About 91% of tracks are non-explicit. The duration values
+look like normal song lengths which is a good sign.
+
+
+----------------------------------------------------------------
+OPERATION 5 — Flag Zero-Popularity and Remove Duration Outliers
+----------------------------------------------------------------
+
+What I did:
+I created a new column called is_zero_popularity which is True
+for any track with a popularity score of exactly 0. I did NOT
+delete these tracks — I just flagged them so Deepesh can
+decide how to handle them in his EDA.
+
+I also removed tracks longer than 15 minutes because no normal
+Spotify song is that long — those are clearly data errors.
+
+Code:
+    df['is_zero_popularity'] = df['popularity'] == 0
+
+    zero_count = df['is_zero_popularity'].sum()
+    total = len(df)
+    print(f"Zero-popularity tracks: {zero_count} ({100*zero_count/total:.1f}%)")
+    print(df['popularity'].describe())
+
+    rows_before = len(df)
+    df = df[df['duration_minutes'] <= 15]
+    print(f"\nDuration outliers removed: {rows_before - len(df)}")
+    print(f"Rows remaining: {len(df)}")
+
+Output:
+    >> Zero-popularity tracks: 15,843  (14.0% of dataset)
+    >> Mean popularity: 33.32
+    >> Median popularity: 35
+    >> Min: 0  |  Max: 100
+    >> Duration outliers removed: 149
+    >> Rows remaining: 113,400
+
+14% of tracks have zero popularity. I flagged them instead of
+deleting because they might just be obscure tracks, not bad
+data. Only 149 rows removed as duration outliers.
+
+
+----------------------------------------------------------------
+OPERATION 6 — Normalize track_genre Column
+----------------------------------------------------------------
+
+What I did:
+I used .str.strip().str.lower() on the track_genre column to
+remove extra spaces and convert everything to lowercase.
+Without this, 'Pop' and 'pop' and 'POP' get counted as three
+different genres which would mess up every genre comparison.
+
+Then I made a bar chart of the top 15 genres and saved it as
+genre_distribution.png.
+
+Code:
+    print(f"Unique genres before: {df['track_genre'].nunique()}")
+
+    df['track_genre'] = df['track_genre'].str.strip().str.lower()
+
+    print(f"Unique genres after: {df['track_genre'].nunique()}")
+
+    top_genres = df['track_genre'].value_counts().head(15)
+    plt.figure(figsize=(10,6))
+    top_genres.plot(kind='bar', color='steelblue')
+    plt.title('Top 15 Genres by Track Count')
+    plt.xlabel('Genre')
+    plt.ylabel('Number of Tracks')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.savefig('genre_distribution.png')
+    plt.show()
+
+Output:
+    >> Unique genres before: 114
+    >> Unique genres after:  114
+
+Genre count stayed the same which means there were no messy
+duplicates caused by spacing or capitalisation. The bar chart
+showed every top genre has about 1,000 tracks — very balanced
+dataset which is great for our Phase 2 models.
+
+    [INSERT: genre_distribution.png]
+
+
+----------------------------------------------------------------
+FINAL STEP — Save the Cleaned Dataset
+----------------------------------------------------------------
+
+Code:
+    df.to_csv('spotify_cleaned.csv', index=False)
+    print(f"Cleaned dataset saved as spotify_cleaned.csv")
+    print(f"Dataset shape after cleaning: {df.shape}")
+    print(f"The cleaned dataset contains {df.shape[0]:,} rows "
+          f"and {df.shape[1]} columns, suitable for large-scale analysis.")
+
+Output:
+    >> Cleaned dataset saved as spotify_cleaned.csv
+    >> Dataset shape after cleaning: (113400, 21)
+    >> The cleaned dataset contains 113,400 rows and 21 columns,
+       suitable for large-scale analysis.
+
+I sent spotify_cleaned.csv to Deepesh for EDA and to Jeevan
+for the HDFS upload via Teams #file-handoffs channel.
+
+
+================================================================
+CLEANING SUMMARY TABLE
+================================================================
+
+  Step  | Operation                  | Before   | After    | Lost
+  ------+----------------------------+----------+----------+------
+  Op 1  | Load, drop unnamed col     | 114,000  | 114,000  |    0
+  Op 2  | Remove null rows           | 114,000  | 113,999  |    1
+  Op 3  | Remove exact duplicates    | 113,999  | 113,549  |  450
+  Op 4  | Fix data types             | 113,549  | 113,549  |    0
+  Op 5  | Remove duration outliers   | 113,549  | 113,400  |  149
+  Op 6  | Normalize genres           | 113,400  | 113,400  |    0
+  TOTAL |                            | 114,000  | 113,400  |  600
+
+
+================================================================
+FINAL DATASET STATS
+================================================================
+
+  Input file        : spotify_tracks.csv
+  Output file       : spotify_cleaned.csv
+  Rows start        : 114,000
+  Rows final        : 113,400
+  Rows removed      : 600  (just 0.53% of total)
+  Columns           : 21
+  Columns removed   : duration_ms, Unnamed: 0
+  Columns added     : duration_minutes, is_zero_popularity
+  Unique genres     : 114
+  Zero popularity   : 15,843 flagged (14%)
+  Explicit tracks   : 9,718 (8.6%)
+
+
+================================================================
+QUICK REFLECTION
+================================================================
+
+I went in thinking this would be simple but it actually needed
+real thought. The biggest thing I learned was the duplicate
+check — if I had just deleted all track_id duplicates without
+checking, I would have wiped out 24,259 perfectly valid rows.
+Always understand your data before you clean it.
+
+We only lost 600 rows out of 114,000 in total. That is 0.53%
+which is a really clean outcome. The file is ready for EDA
+and HDFS upload.
+
+================================================================
+              END OF SECTION 4 — Sri Lakshmi
+================================================================
