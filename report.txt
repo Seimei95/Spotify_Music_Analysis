@@ -317,3 +317,306 @@ and HDFS upload.
 ================================================================
               END OF SECTION 4 — Sri Lakshmi
 ================================================================
+
+
+================================================================================
+5. EXPLORATORY DATA ANALYSIS
+================================================================================
+
+Done by: Deepesh
+Notebook: task5_eda.ipynb
+Dataset: spotify_cleaned.csv
+Libraries used: pandas, matplotlib, seaborn, numpy
+
+For this part of the project, I looked at the cleaned Spotify dataset and ran
+six different analyses to better understand the data. The first two were just
+printed stats with no graphs, and the last four all produced charts. My goal
+was to find patterns in the data that could help us build better machine
+learning models later in Phase 2.
+
+--------------------------------------------------------------------------------
+EDA OPERATION 1 — SUMMARY STATISTICS
+--------------------------------------------------------------------------------
+
+For my first operation, I wanted to get a basic feel for the dataset — like
+what the numbers actually look like across all the columns. I also checked how
+skewed some of the important columns were, because that tells you if the data
+is spread out evenly or leaning more to one side.
+
+CODE:
+-----
+import matplotlib
+matplotlib.use('Agg')
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+df = pd.read_csv('spotify_cleaned.csv')
+
+print("=== Descriptive Statistics ===")
+print(df.describe().round(2))
+
+print("\n=== Skewness and Kurtosis ===")
+cols = ['popularity', 'danceability', 'energy', 'tempo', 'duration_minutes']
+for col in cols:
+    print(f"{col}: skewness={df[col].skew():.3f}, kurtosis={df[col].kurtosis():.3f}")
+
+WHAT I FOUND:
+-------------
+Looking at the results, the popularity column stood out the most. The average
+popularity score was pretty low, which means most songs in the dataset are not
+that popular. The skewness value for popularity was high and positive, which
+basically means a lot of songs are bunched up near zero and only a few songs
+are actually very popular. Danceability and energy looked more balanced
+compared to popularity. Tempo and duration were also fairly stable across the
+dataset with no extreme skew.
+
+[INSERT SCREENSHOT: EDA Operation 1 output]
+
+--------------------------------------------------------------------------------
+EDA OPERATION 2 — MISSINGNESS AND ZERO-POPULARITY ANALYSIS
+--------------------------------------------------------------------------------
+
+Here I checked if there were any missing values still left in the data after
+the cleaning step. I also looked specifically at tracks where the popularity
+score was zero, because those are a bit unusual — they could be songs that
+nobody has ever listened to or rated on Spotify.
+
+CODE:
+-----
+print("=== Remaining Null Values ===")
+print(df.isnull().sum())
+
+zero_pct = 100 * df['is_zero_popularity'].sum() / len(df)
+print(f"\nPercentage of zero-popularity tracks: {zero_pct:.1f}%")
+
+print("\n=== Mean Popularity: Zero vs Non-Zero ===")
+print(df.groupby('is_zero_popularity')['popularity'].mean())
+
+WHAT I FOUND:
+-------------
+Good news — there were no missing values left at all, which means the cleaning
+from Task 4 worked well. For the zero-popularity tracks, a decent chunk of the
+dataset had a popularity score of exactly zero. When I compared the average
+popularity of zero vs non-zero tracks, the difference was huge, which makes
+sense. This is something we need to think about in Phase 2 because if we just
+throw all the data into a model without handling these zero-popularity tracks
+carefully, it could mess up the predictions.
+
+[INSERT SCREENSHOT: EDA Operation 2 output]
+
+--------------------------------------------------------------------------------
+EDA OPERATION 3 — POPULARITY DISTRIBUTION
+--------------------------------------------------------------------------------
+
+For this one I made a histogram to see how popularity scores are spread out
+across all the tracks. I added a KDE line on top to smooth it out, and two
+vertical lines to mark where the mean and median fall.
+
+CODE:
+-----
+plt.figure(figsize=(10, 5))
+sns.histplot(df['popularity'], bins=50, kde=True, color='steelblue')
+plt.axvline(df['popularity'].mean(), color='red', linestyle='--',
+            label=f"Mean: {df['popularity'].mean():.1f}")
+plt.axvline(df['popularity'].median(), color='orange', linestyle='--',
+            label=f"Median: {df['popularity'].median():.1f}")
+plt.title('Distribution of Track Popularity')
+plt.xlabel('Popularity Score')
+plt.ylabel('Number of Tracks')
+plt.legend()
+plt.tight_layout()
+plt.savefig('eda_plot_1.png')
+plt.close()
+print("Saved: eda_plot_1.png")
+
+from IPython.display import Image
+Image('eda_plot_1.png')
+
+WHAT I FOUND:
+-------------
+The chart looked really interesting. There was a massive spike at zero, way
+bigger than everything else, and then a smaller bump somewhere around the 40
+to 60 range. This tells me that zero-popularity songs are not just low scoring
+— they are in their own separate group. The mean was higher than the median,
+which also matches with the right skew we saw earlier. For Phase 2, this shape
+of data means a basic regression model might struggle, and splitting songs into
+Low, Medium, and High popularity categories might work better.
+
+[INSERT SCREENSHOT: EDA Operation 3 output]
+[INSERT CHART: eda_plot_1.png]
+
+--------------------------------------------------------------------------------
+EDA OPERATION 4 — CORRELATION HEATMAP OF AUDIO FEATURES
+--------------------------------------------------------------------------------
+
+Here I wanted to see how the different audio features relate to each other.
+I picked eight features and made a heatmap to show which ones move together
+and which ones go in opposite directions.
+
+CODE:
+-----
+audio_features = ['danceability', 'energy', 'loudness', 'speechiness',
+                  'acousticness', 'instrumentalness', 'valence', 'tempo']
+
+corr = df[audio_features].corr()
+
+plt.figure(figsize=(10, 8))
+sns.heatmap(corr, annot=True, cmap='coolwarm', fmt='.2f', linewidths=0.5)
+plt.title('Correlation Heatmap of Audio Features')
+plt.tight_layout()
+plt.savefig('eda_plot_2.png')
+plt.close()
+print("Saved: eda_plot_2.png")
+
+from IPython.display import Image
+Image('eda_plot_2.png')
+
+WHAT I FOUND:
+-------------
+The most obvious thing I noticed was that energy and loudness were strongly
+correlated with each other at around 0.77. That makes sense because louder
+songs tend to feel more energetic. Acousticness was strongly negative with
+both energy and loudness, which also makes sense — acoustic songs are usually
+quieter and calmer. Most of the other features did not really correlate with
+each other much. For Phase 2, since energy and loudness basically carry the
+same information, we probably do not need both of them in our model. The other
+features being independent of each other is actually good for clustering.
+
+[INSERT SCREENSHOT: EDA Operation 4 output]
+[INSERT CHART: eda_plot_2.png]
+
+--------------------------------------------------------------------------------
+EDA OPERATION 5 — TOP GENRES BY AVERAGE POPULARITY
+--------------------------------------------------------------------------------
+
+For this one I grouped all the songs by genre, calculated the average
+popularity for each genre, and then plotted the top 15 as a horizontal bar
+chart. I wanted to see which genres tend to produce the most popular songs.
+
+CODE:
+-----
+top_genres = (df.groupby('track_genre')['popularity']
+              .mean()
+              .sort_values(ascending=False)
+              .head(15))
+
+plt.figure(figsize=(10, 7))
+colors = sns.color_palette("Blues_r", len(top_genres))
+top_genres.plot(kind='barh', color=colors)
+plt.title('Top 15 Genres by Average Track Popularity')
+plt.xlabel('Average Popularity Score')
+plt.ylabel('Genre')
+plt.gca().invert_yaxis()
+plt.tight_layout()
+plt.savefig('eda_plot_3.png')
+plt.close()
+print("Saved: eda_plot_3.png")
+
+from IPython.display import Image
+Image('eda_plot_3.png')
+
+WHAT I FOUND:
+-------------
+Pop and dance genres came out on top, which honestly was not surprising. More
+niche genres like classical scored much lower on average. The gap between the
+top and bottom genres was pretty large, which tells me that genre is actually
+a useful feature for predicting popularity. When we build the classification
+model in Phase 2, genre should definitely be included as one of the input
+features because it clearly has an effect on how popular a song ends up being.
+
+[INSERT SCREENSHOT: EDA Operation 5 output]
+[INSERT CHART: eda_plot_3.png]
+
+--------------------------------------------------------------------------------
+EDA OPERATION 6 — AUDIO FEATURE DISTRIBUTION BY POPULARITY GROUP
+--------------------------------------------------------------------------------
+
+For my last operation, I split the songs into three groups based on their
+popularity score — Low (0 to 30), Medium (31 to 70), and High (71 to 100) —
+and then made boxplots for four audio features to see how they differ across
+these groups.
+
+CODE:
+-----
+df['popularity_group'] = pd.cut(
+    df['popularity'],
+    bins=[0, 30, 70, 100],
+    labels=['Low', 'Medium', 'High'],
+    include_lowest=True
+)
+
+features = ['danceability', 'energy', 'valence', 'acousticness']
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+axes = axes.flatten()
+
+for i, feature in enumerate(features):
+    sns.boxplot(x='popularity_group', y=feature, data=df, ax=axes[i],
+                hue='popularity_group', palette='Blues', legend=False, orient='v')
+    axes[i].set_title(f'{feature.capitalize()} by Popularity Group')
+    axes[i].set_xlabel('Popularity Group')
+    axes[i].set_ylabel(feature.capitalize())
+
+plt.suptitle('Audio Feature Distribution by Popularity Group', fontsize=14, y=1.02)
+plt.tight_layout()
+plt.savefig('eda_plot_4.png')
+plt.close()
+print("Saved: eda_plot_4.png")
+
+from IPython.display import Image
+Image('eda_plot_4.png')
+
+WHAT I FOUND:
+-------------
+The boxplots showed some clear differences. High popularity songs tended to
+have higher danceability and energy, while Low popularity songs had lower
+values for both. Acousticness was the opposite — high popularity songs had
+lower acousticness, meaning very acoustic songs do not tend to do as well.
+Valence was the least clear — the boxes overlapped a lot across all three
+groups, so whether a song sounds happy or sad does not seem to matter that
+much for popularity. For Phase 2, danceability, energy, and acousticness look
+like the strongest features to include in our models, while valence might not
+add much.
+
+[INSERT SCREENSHOT: EDA Operation 6 output]
+[INSERT CHART: eda_plot_4.png]
+
+================================================================================
+EDA SUMMARY AND IMPLICATIONS FOR PHASE 2
+================================================================================
+
+- Operation 1 (Summary Statistics):
+  Popularity is heavily skewed to the right, meaning most songs have low
+  scores and very few are highly popular. We need to handle this imbalance
+  carefully when training models in Phase 2.
+
+- Operation 2 (Zero-Popularity):
+  No missing values were found. A large chunk of songs had zero popularity,
+  which is a separate problem on its own. Phase 2 models need to deal with
+  these zero-popularity tracks carefully or they could skew the results.
+
+- Operation 3 (Popularity Distribution):
+  The two humps in the histogram — one at zero and one around 40 to 60 —
+  confirm that zero tracks are their own group. Splitting popularity into
+  Low, Medium, and High categories for classification might work better than
+  trying to predict an exact score.
+
+- Operation 4 (Correlation Heatmap):
+  Energy and loudness are almost the same thing in terms of what they measure,
+  so we might only need one of them in our model. Acousticness being the
+  opposite of energy is also useful to know for feature selection.
+
+- Operation 5 (Top Genres):
+  Genre clearly affects how popular a song is, with pop and dance genres
+  scoring much higher than others. Genre should be an important input feature
+  in our Phase 2 classification model.
+
+- Operation 6 (Boxplots by Popularity Group):
+  Danceability, energy, and acousticness are the features that best separate
+  Low, Medium, and High popularity songs. These should be the top priority
+  features for all three machine learning tasks in Phase 2.
+
+================================================================================
+END OF EDA SECTION
+================================================================================
