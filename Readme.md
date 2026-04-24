@@ -1,222 +1,22 @@
-# 🎵 Spotify Music Analysis — Phase 1 Complete Team Plan
-**Course Project | Big Data Pipeline | Hadoop + Python**
-**Dataset:** Spotify Tracks Dataset (Kaggle, ~114,000 rows)
+# 🎵 Spotify Music Analysis — Phase 2 Complete Team Plan
+**Course Project | Big Data Pipeline | PySpark + Spark MLlib**
+**Dataset:** Spotify Cleaned Dataset from Phase 1 HDFS (`/spotify/cleaned/spotify_cleaned.csv`)
 **Team Size:** 3 people | N = 3
-**Internal Working Deadline:** 1 Day | **Submission Deadline:** March 14, 2026 (Saturday) 11:59 PM EST via UBLearns
+**Submission Deadline:** Check UBLearns for exact date/time | Submit via UBLearns
 
 ---
 
 ## 📌 QUICK NAVIGATION
-**Jump To**
-[🛠️ Team Setup — GitHub, Teams, Repo](#-team-setup--do-this-before-anything-else)
-[A. Jeevan — Repo Setup, Teams, Work Division](#section-a--jeevan-sets-up-the-repo-do-this-first-alone)
-[B. Sri Lakshmi + Deepesh — Clone Repo](#section-b--sri-lakshmi-and-deepesh-clone-the-repo-each-person-does-this-on-their-own-machine)
-[C. How to Push Work to GitHub](#section-c--how-to-submit-your-work-all-three-members-follow-this-every-time)
-[D. File Naming Rules](#section-d--repo-file-naming-rules-everyone-must-follow-this)
+
 [✅ Instructor Requirements Checklist](#-cross-check-with-instructor-requirements)
 [⚡ Work Division at a Glance](#-work-division-at-a-glance)
-[🕐 Timeline — 1 Day](#-timeline-1-day)
-[👤 Jeevan's Tasks — Task 1 + Task 3](#-jeevans-tasks)
-[👤 Sri Lakshmi's Tasks — Task 2 + Task 4](#-sri-lakshmis-tasks)
-[👤 Deepesh's Tasks — Task 5 EDA](#-deepeshs-tasks)
+[🕐 Timeline](#-timeline)
+[🛠️ Environment Setup — All Members](#️-environment-setup--all-members-do-this-first)
+[👤 Jeevan's Tasks — Spark Setup + Regression + Hyperparameter Tuning + Report Assembly](#-jeevans-tasks)
+[👤 Deepesh's Tasks — Clustering + All 6 Data Analysis Objectives](#-deepeshs-tasks)
+[👤 Sri Lakshmi's Tasks — Classification + Report Section](#-sri-lakshmis-tasks)
 [📄 Final Report Structure](#-final-report-structure)
 [📌 Important Reminders](#-important-reminders)
-
----
-
-## 🛠️ TEAM SETUP — DO THIS BEFORE ANYTHING ELSE
-**Jeevan handles all of Section A. Sri Lakshmi and Deepesh only do Section B and C on their own machines.**
-
-### SECTION A — JEEVAN SETS UP THE REPO (Do this first, alone)
-
-**A1 — Prepare the GitHub Repository**
-Your repo is already created at: `https://github.com/Seimei95/Spotify_Music_Analysis.git`
-
-1. Go to your repo on GitHub
-2. Create the following folder structure by adding a blank `.gitkeep` file inside each folder:
-```text
-Spotify_Music_Analysis/
-├── notebooks/          ← Sri Lakshmi and Deepesh put their .ipynb files here
-├── data/               ← DO NOT push CSVs here (too large). Just a placeholder.
-├── screenshots/        ← All HDFS screenshots go here
-├── reports/            ← Final compiled report goes here
-├── logs/               ← Work Division file and Meetings Log go here
-└── README.md           ← Already exists or create it
-```
-*(In each empty folder, create a file called `.gitkeep` with no content so GitHub tracks the folder)*
-
-**A2 — Invite Teammates to GitHub**
-
-1. Go to your repo: `https://github.com/Seimei95/Spotify_Music_Analysis`
-2. Click **Settings → Collaborators → Add people**
-3. Add Sri Lakshmi and Deepesh by their GitHub usernames or email addresses
-4. Also add your TA as a collaborator (ask your TA for their GitHub username)
-5. Set all of them to **Write** access
-
-**A3 — Create the Work Division File**
-In the `logs/` folder, create a file called `work_division.md` and paste this:
-
-```md
-# Work Division — Spotify Music Analysis Phase 1
-
-## Task Assignments
-
-| Task | Person | Description |
-|------|--------|-------------|
-| Task 1 — Problem Statement | Jeevan | Write ML tasks, objectives, input/output spec |
-| Task 2 — Data Sources | Sri Lakshmi | Dataset documentation and citation |
-| Task 3 — HDFS Setup | Jeevan | Docker, Hadoop setup, raw + cleaned ingestion |
-| Task 4 — Data Cleaning | Sri Lakshmi | 6 cleaning operations in Jupyter Notebook |
-| Task 5 — EDA | Deepesh | 6 EDA operations, charts, summary |
-| Final Report Assembly | Jeevan | Compile all sections into final report |
-
-## Member Acknowledgements
-
-I, Jeevan, acknowledge the above work division and take responsibility for my assigned tasks.
-Signed: _______________
-
-I, Sri Lakshmi, acknowledge the above work division and take responsibility for my assigned tasks.
-Signed: _______________
-
-I, Deepesh, acknowledge the above work division and take responsibility for my assigned tasks.
-Signed: _______________
-```
-
-**A4 — Create the Meetings Log File**
-In the `logs/` folder, create a file called `meetings_log.md` and paste this:
-
-```md
-# Meetings Log — Spotify Music Analysis Phase 1
-
-## Meeting 1
-Date: [fill in today's date]
-Attendees: Jeevan, Sri Lakshmi, Deepesh
-Discussion: Agreed on project topic (Spotify dataset), divided tasks, set up GitHub repo and Microsoft Teams workspace using personal emails
-Progress: All members set up their environments
-Next steps: Jeevan downloads dataset and sets up HDFS. Sri Lakshmi starts cleaning. Deepesh installs dependencies.
-
-## Meeting 2
-Date: [fill in]
-Attendees: [fill in]
-Discussion: [fill in]
-Progress: [fill in]
-Next steps: [fill in]
-```
-
-*Keep updating this file after every meeting or discussion. The TA will check it.*
-
-**A5 — Set Up Microsoft Teams (for team communication)**
-Teams is free with a personal Microsoft account. Use personal emails — university emails are blocked from creating teams with channels.
-
-1. Go to `https://teams.microsoft.com` and sign in with your personal Microsoft account (e.g. outlook.com or hotmail.com). If you don't have one, create a free account.
-2. Make sure you are on Microsoft Teams (free) — not the work/school version.
-3. Click **Teams** on the left sidebar → **Join or create a team**
-4. Click **Create team → From scratch → Private**
-5. Name it: `Spotify Music Analysis - Phase 1`
-6. Click **Add members** and invite Sri Lakshmi and Deepesh using their personal Microsoft emails.
-
-**A6 — Set Up Channels Inside the Team**
-Add the following standard channels so discussions stay organized:
-
-* `General` (Default channel, use for announcements)
-* `task-1-problem-statement` (Jeevan's notes and decisions)
-* `task-2-data-sources` (Sri Lakshmi's updates)
-* `task-3-hdfs` (Jeevan's HDFS progress and screenshots)
-* `task-4-cleaning` (Sri Lakshmi's cleaning updates and errors)
-* `task-5-eda` (Deepesh's EDA updates and chart previews)
-* `file-handoffs` (Use this ONLY to share files between teammates)
-
-**A7 — Rules for Using Teams**
-
-* Every time you finish a task, post a message in the relevant channel saying what you did.
-* Every time you hand off a file, post it in `#file-handoffs` with a clear message like `"spotify_cleaned.csv ready for Deepesh"`.
-* Every meeting or discussion, paste a short summary into `General` — this serves as your Meetings Log.
-* If you hit an error, paste the error message in the relevant channel so teammates can help.
-
----
-
-### SECTION B — SRI LAKSHMI AND DEEPESH: CLONE THE REPO (Each person does this on their own machine)
-
-**B1 — Install Git**
-If you don't have Git installed:
-
-* **Windows:** Download from `https://git-scm.com/download/win` and install
-* **Mac:** Open Terminal and run `git --version` — it will prompt you to install if missing
-* **Linux:** Run `sudo apt install git`
-
-**B2 — Clone the Repository**
-Open your terminal and run:
-
-```bash
-git clone https://github.com/Seimei95/Spotify_Music_Analysis.git
-cd Spotify_Music_Analysis
-```
-
-You now have the full project folder on your machine.
-
-**B3 — Set Up Your Identity (one time only)**
-
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "your@email.com"
-```
-
----
-
-### SECTION C — HOW TO SUBMIT YOUR WORK (All three members follow this every time)
-
-Every time you finish a piece of work (a notebook, a screenshot, a report section), do the following:
-
-**C1 — Put your file in the right folder**
-
-* Notebooks → `notebooks/` folder
-* Screenshots → `screenshots/` folder
-* Report → `reports/` folder
-* Log updates → `logs/` folder
-
-**C2 — Push to GitHub**
-Open terminal inside the project folder and run:
-
-```bash
-# Step 1: See what files you changed
-git status
-
-# Step 2: Stage your files
-git add .
-
-# Step 3: Write a short message describing what you did
-git commit -m "Add task4_cleaning notebook - Sri Lakshmi"
-
-# Step 4: Push to GitHub
-git push origin main
-```
-
-*(If it asks for a username/password, use your GitHub username and a Personal Access Token).*
-
-**C3 — Pull before you start working (avoid conflicts)**
-Every time you sit down to work, first run:
-
-```bash
-git pull origin main
-```
-This makes sure you have everyone else's latest changes before you start.
-
----
-
-### SECTION D — REPO FILE NAMING RULES (Everyone must follow this)
-
-| File | Person | Where to put it |
-| --- | --- | --- |
-| `task4_cleaning.ipynb` | Sri Lakshmi | `notebooks/` |
-| `task5_eda.ipynb` | Deepesh | `notebooks/` |
-| `genre_distribution.png` | Sri Lakshmi | `notebooks/` |
-| `eda_plot_1.png` to `eda_plot_4.png` | Deepesh | `notebooks/` (plot 4 = 2x2 boxplot grid) |
-| HDFS screenshots | Jeevan | `screenshots/` |
-| `work_division.md` | Jeevan | `logs/` |
-| `meetings_log.md` | All | `logs/` |
-| Final report PDF/DOCX | Jeevan | `reports/` |
-
-⚠️ **Do NOT push `spotify_tracks.csv` or `spotify_cleaned.csv` to GitHub** — they are too large. Keep them only on your local machine and share via Teams or Google Drive.
 
 ---
 
@@ -224,16 +24,19 @@ This makes sure you have everyone else's latest changes before you start.
 
 | Requirement | What We're Doing | Status |
 | --- | --- | --- |
-| ≥ 100,000 rows | Spotify dataset has ~114,000 rows, cleans to ~112k | ✅ |
-| N ML problem statements (N=3) | 3 ML tasks defined | ✅ |
-| 2N data analysis objectives (2×3=6) | 6 objectives defined | ✅ |
-| 2N cleaning operations (2×3=6) | 6 cleaning steps in notebook | ✅ |
-| 2N EDA operations (2×3=6) | 6 EDA steps (mix graphical + non-graphical) | ✅ |
-| Jupyter Notebook as environment | All code in `.ipynb` files | ✅ |
-| HDFS raw dataset (Part A) | Raw CSV uploaded to `/spotify/raw/` | ✅ |
-| HDFS cleaned dataset (Part B) | Cleaned CSV uploaded to `/spotify/cleaned/` | ✅ |
-| Written report | All tasks documented in report | ✅ |
-| Reproducible pipeline | Notebooks run top-to-bottom without errors | ✅ |
+| N ML algorithms (N=3) | Regression (Jeevan) + Classification (Sri Lakshmi) + Clustering (Deepesh) | ✅ |
+| Load data from HDFS cleaned path | All notebooks read from `hdfs://localhost:9000/spotify/cleaned/spotify_cleaned.csv` | ✅ |
+| PySpark / Spark MLlib only | No sklearn — only `pyspark.ml` APIs | ✅ |
+| Model Training + Evaluation with appropriate metrics | RMSE for regression, F1 + Accuracy for classification, Silhouette for clustering | ✅ |
+| Hyperparameter Tuning (≥ 1 algorithm) | CrossValidator + ParamGrid on Regression model (Jeevan) | ✅ |
+| Explanation + Analysis for each algorithm | Justification, metrics, visualizations, insights in each notebook | ✅ |
+| 2N Data Analysis Objectives (2×3 = 6) | All 6 Phase 1 objectives addressed in Spark (Deepesh) | ✅ |
+| Jupyter Notebook (PySpark) | All code in `.ipynb` files with PySpark kernel | ✅ |
+| Notebook runs end-to-end without errors | Every notebook must be tested top-to-bottom before submission | ✅ |
+| Reproducible on a different machine | No hardcoded local paths — HDFS path only | ✅ |
+| Personal statement with signature | All 3 members include signed personal statement in report | ✅ |
+| 5-minute video presentation | All members recorded + submitted with zip | ✅ |
+| In-person Demo Day (CSE 587 Graduate) | All members present on Demo Day Week 15 | ✅ |
 
 ---
 
@@ -241,151 +44,468 @@ This makes sure you have everyone else's latest changes before you start.
 
 | Person | Tasks | Points |
 | --- | --- | --- |
-| **Jeevan** | Task 1 (Problem Statement) + Task 3 (HDFS Setup) + Dataset Download | 35 pts |
-| **Sri Lakshmi** | Task 2 (Data Sources) + Task 4 (Data Cleaning) | 40 pts |
-| **Deepesh** | Task 5 (EDA) | 25 pts |
+| **Jeevan** | Spark Environment Setup + ML Task 1 (Regression) + Hyperparameter Tuning + Final Report Assembly | ~40 pts ML + coordination |
+| **Deepesh** | ML Task 3 (Clustering) + All 6 Data Analysis Objectives | ~10 pts ML + 30 pts objectives |
+| **Sri Lakshmi** | ML Task 2 (Classification) + Report section for Classification | ~10 pts ML + her report section |
+
+> All three contribute equally to the 20 pt Presentation / Demo.
 
 ⚠️ **ORDER MATTERS — Follow this sequence:**
 
-1. Jeevan starts HDFS setup + writes Problem Statement + downloads dataset (simultaneously)
-2. Jeevan hands off `spotify_tracks.csv` to Sri Lakshmi
-3. Sri Lakshmi runs the cleaning notebook and produces `spotify_cleaned.csv`
-4. Sri Lakshmi hands off `spotify_cleaned.csv` to Deepesh AND to Jeevan
-5. Deepesh runs EDA notebook
-6. Jeevan uploads `spotify_cleaned.csv` to HDFS last
+1. All three members set up PySpark environment independently (parallel)
+2. Jeevan confirms HDFS is running and posts the verified path in Teams
+3. Sri Lakshmi runs Classification notebook using HDFS path
+4. Deepesh runs Clustering notebook + Data Analysis Objectives notebook using HDFS path
+5. Jeevan runs Regression + Hyperparameter Tuning notebook
+6. Each person writes their own report section
+7. Jeevan assembles all sections into the final report
+8. All three record the 5-minute video together
 
 ---
 
-## 🕐 TIMELINE (1 Day)
+## 🕐 TIMELINE
 
-| Time | Jeevan | Sri Lakshmi | Deepesh |
+| Phase | Jeevan | Deepesh | Sri Lakshmi |
 | --- | --- | --- | --- |
-| **Hour 0–1** | Write Problem Statement + download dataset from Kaggle | Install Jupyter + dependencies | Install dependencies |
-| **Hour 1–3** | Docker + HDFS setup, upload raw CSV, hand off `spotify_tracks.csv` | Wait for CSV, then run cleaning notebook | Wait for cleaned CSV |
-| **Hour 3–5** | Wait / help team | Finish cleaning, hand off `spotify_cleaned.csv` | Run EDA notebook |
-| **Hour 5–6** | Upload cleaned CSV to HDFS | Compile report section | Compile report section |
-| **Hour 6+** | Everyone assembles the final report together | | |
+| **Day 1 — Setup** | Start Hadoop container, confirm HDFS path works, install PySpark | Install PySpark, confirm connection to HDFS | Install PySpark, confirm connection to HDFS |
+| **Day 2 — ML Notebooks** | Write Regression notebook + Hyperparameter Tuning | Write Clustering notebook | Write Classification notebook |
+| **Day 3 — Analysis** | Test notebook end-to-end, fix errors | Write all 6 Data Analysis Objective analyses in Spark | Test notebook end-to-end, write report section |
+| **Day 4 — Report** | Assemble full report from all sections | Finalize analysis notebook + write report section | Submit report section to Jeevan |
+| **Day 5 — Final** | Final checks, zip submission, record video together | Record video + review submission | Record video + review submission |
+
+---
+
+## 🛠️ ENVIRONMENT SETUP — ALL MEMBERS (Do this first)
+
+### Install PySpark
+
+```bash
+pip install pyspark findspark
+```
+
+### Start Your Phase 1 Hadoop Container
+
+If you stopped it after Phase 1:
+
+```bash
+docker start hadoop_phase1
+docker exec -it hadoop_phase1 /bin/bash
+```
+
+Confirm HDFS is running inside the container:
+
+```bash
+hdfs dfs -ls /spotify/cleaned/
+```
+
+You should see `spotify_cleaned.csv` listed. If not, contact Jeevan — the file may need to be re-uploaded from Phase 1.
+
+### Connect PySpark to HDFS
+
+At the top of every notebook, use this exact SparkSession setup:
+
+```python
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("SpotifyPhase2") \
+    .config("spark.hadoop.fs.defaultFS", "hdfs://localhost:9000") \
+    .getOrCreate()
+
+df = spark.read.csv(
+    "hdfs://localhost:9000/spotify/cleaned/spotify_cleaned.csv",
+    header=True,
+    inferSchema=True
+)
+df.printSchema()
+print(f"Total rows: {df.count()}")
+```
+
+⚠️ **Do NOT load from a local CSV file.** The notebook must load from HDFS to satisfy the course requirement.
+
+### Exact Columns in `spotify_cleaned.csv` (21 columns, 113,400 rows)
+
+These are confirmed from the Phase 1 cleaning notebook output:
+
+```
+track_id          — string
+artists           — string
+album_name        — string
+track_name        — string
+popularity        — integer (0–100)
+explicit          — boolean (True/False)
+danceability      — float (0.0–1.0)
+energy            — float (0.0–1.0)
+key               — integer (0–11)
+loudness          — float (negative, in dB)
+mode              — integer (0 or 1)
+speechiness       — float (0.0–1.0)
+acousticness      — float (0.0–1.0)
+instrumentalness  — float (0.0–1.0)
+liveness          — float (0.0–1.0)
+valence           — float (0.0–1.0)
+tempo             — float (BPM)
+time_signature    — integer
+track_genre       — string (114 unique genres, already lowercase)
+duration_minutes  — float (replaced duration_ms from Phase 1)
+is_zero_popularity — boolean (True when popularity == 0, ~14% of data)
+```
+
+> **Important for PySpark:**
+> - `explicit` and `is_zero_popularity` load as **BooleanType** with `inferSchema=True`
+> - VectorAssembler **cannot handle BooleanType** — cast to IntegerType first if using as a feature
+> - `popularity_group` (Low/Medium/High) does **NOT** exist in the CSV — you must create it in your notebook
+> - `duration_ms` does **NOT** exist — use `duration_minutes` instead
 
 ---
 
 ## 👤 JEEVAN'S TASKS
 
-### TASK 1 — Problem Statement [20 pts]
+### TASK: Spark Environment Lead + ML Task 1 — Regression [Hardest]
 
-*Write all of this in your report. You do NOT need a notebook for this task.*
-
-**Project Title**
-"Predicting Track Popularity and Discovering Music Patterns Using the Spotify Tracks Dataset"
-
-**High-Level Problem Statement**
-Music streaming platforms serve billions of listeners worldwide and need to understand what makes a track popular in order to power recommendation engines, playlist curation, and artist discovery tools. This project analyzes the Spotify Tracks Dataset — approximately 114,000 tracks with rich audio features and popularity scores provided directly by Spotify — to uncover what audio and metadata features drive track popularity, segment music into natural clusters, and build predictive models.
-
-Stakeholders who benefit from this analysis:
-
-* Streaming platforms (Spotify, Apple Music) optimizing recommendation systems
-* Independent artists wanting to understand what makes a track more likely to succeed
-* Record labels identifying hit potential before investing in promotion
-* Music recommendation system engineers building AI-powered features
-
-**ML Problem Statements (N=3 — one per team member, all go in report)**
-
-* **ML Task 1 — Regression:** Predict a track's popularity score (continuous value 0 to 100) using its audio features such as danceability, energy, loudness, tempo, valence, acousticness, and instrumentalness.
-  * Input: Audio feature vector per track
-  * Output: Continuous popularity score (float 0–100)
-  * Unit of analysis: Per track
-
-* **ML Task 2 — Classification:** Classify each track into one of three popularity tiers — Low (0–33), Medium (34–66), or High (67–100) — using its audio features and genre.
-  * Input: Audio features + track_genre
-  * Output: 3-class label (low / medium / high)
-  * Unit of analysis: Per track
-
-* **ML Task 3 — Clustering / Unsupervised Learning:** Group tracks into natural "mood and vibe" clusters using audio features only, with no labels.
-  * Input: Normalized audio feature vector
-  * Output: Cluster ID (integer) assigned to each track
-  * Unit of analysis: Per track
-
-**Data Analysis Objectives (2N = 6 objectives, all go in report)**
-
-1. Understand the distribution of track popularity across different genres and identify which genres consistently produce high-popularity tracks.
-2. Identify which audio features (danceability, energy, loudness, valence, tempo) have the strongest statistical correlation with track popularity.
-3. Analyze how audio features such as valence, energy, and tempo vary across different genres.
-4. Compare danceability and energy profiles across genres to understand the genre-specific audio fingerprint.
-5. Identify the most prolific and highest-popularity artists in the dataset and examine their audio features.
-6. Examine the relationship between track duration and popularity to determine whether listener attention span affects streaming performance.
-
-**Input → Output Specification**
-
-* **Input data:** `spotify_tracks.csv`
-* **Key fields used:** `track_id`, `artists`, `album_name`, `track_name`, `track_genre`, `popularity`, `duration_ms`, `explicit`, `danceability`, `energy`, `key`, `loudness`, `mode`, `speechiness`, `acousticness`, `instrumentalness`, `liveness`, `valence`, `tempo`, `time_signature`, `duration_minutes`
-* **Outputs:**
-  * Regression model → predicted popularity score (float)
-  * Classification model → popularity tier label (low / medium / high)
-  * Clustering model → cluster ID per track (integer)
+You are responsible for:
+1. Confirming HDFS is running and sharing the verified path with the team
+2. Writing the Regression ML notebook with Hyperparameter Tuning
+3. Assembling the final report
 
 ---
 
-### TASK 3 — HDFS Setup & Ingestion [15 pts]
+### Notebook: `task1_regression.ipynb`
 
-*This is the most technical part. Follow every step exactly.*
+🤖 **PASTE THIS PROMPT INTO CLAUDE TO GENERATE YOUR NOTEBOOK**
 
-**STEP 1 — Install Docker Desktop**
-Download from `https://www.docker.com/products/docker-desktop`, install, and ensure it says "Docker is running".
+```
+You are helping me complete ML Task 1 (Regression) for a university big data course — Phase 2.
 
-**STEP 2 — Pull and Start Hadoop Container**
-Open your terminal and run:
+== STRICT CONSTRAINTS — READ BEFORE GENERATING ANYTHING ==
+- Environment: Jupyter Notebook, PySpark (pyspark.ml only)
+- No pandas ML, no sklearn, no numpy ML — only pyspark.ml APIs
+- Data is loaded from HDFS: hdfs://localhost:9000/spotify/cleaned/spotify_cleaned.csv
+- The notebook must run end-to-end without errors
+- Use inferSchema=True when loading
 
-```bash
-docker pull sequenceiq/hadoop-docker:2.7.1
-docker run -it -p 50070:50070 -p 9000:9000 --name hadoop_phase1 sequenceiq/hadoop-docker:2.7.1 /etc/bootstrap.sh -bash
+== EXACT COLUMN INFORMATION — DO NOT DEVIATE ==
+The CSV has exactly 21 columns and 113,400 rows after Phase 1 cleaning:
+  track_id (string), artists (string), album_name (string), track_name (string),
+  popularity (integer, 0-100), explicit (boolean — True/False),
+  danceability (float), energy (float), key (integer),
+  loudness (float, negative dB), mode (integer 0 or 1),
+  speechiness (float), acousticness (float), instrumentalness (float),
+  liveness (float), valence (float), tempo (float),
+  time_signature (integer), track_genre (string),
+  duration_minutes (float — replaces duration_ms which does NOT exist),
+  is_zero_popularity (boolean — True when popularity == 0)
+
+== TASK CONTEXT ==
+ML Task 1 — Regression:
+- Goal: Predict a track's popularity score (continuous, 0–100) from audio features
+- Input features: danceability, energy, loudness, speechiness, acousticness,
+  instrumentalness, liveness, valence, tempo, duration_minutes
+- Target column: popularity (integer/float)
+- Unit of analysis: per track
+
+== NOTEBOOK STRUCTURE — Generate exactly these sections ==
+
+SECTION 1 — Setup and Data Loading
+- SparkSession with appName="SpotifyRegression" and hdfs://localhost:9000 as defaultFS
+- Load CSV from HDFS with header=True, inferSchema=True
+- Print schema and total row count
+- Drop rows where popularity is null
+- Drop the is_zero_popularity column — it is not a model feature
+
+SECTION 2 — Feature Engineering
+- Cast explicit to IntegerType using df.withColumn("explicit", df["explicit"].cast("integer"))
+  (BooleanType cannot go into VectorAssembler directly)
+- Use VectorAssembler to assemble these 10 columns into a single features vector:
+  danceability, energy, loudness, speechiness, acousticness,
+  instrumentalness, liveness, valence, tempo, duration_minutes
+- Do NOT include track_id, artists, album_name, track_name, track_genre, explicit,
+  key, mode, time_signature, or is_zero_popularity in the features vector
+- Show the first 5 rows of the assembled dataframe with features and popularity columns only
+
+SECTION 3 — Train/Test Split
+- Split assembled data into 80% train, 20% test using randomSplit([0.8, 0.2], seed=42)
+- Print train and test row counts
+
+SECTION 4 — Model 1: Linear Regression
+- Train pyspark.ml.regression.LinearRegression with featuresCol="features", labelCol="popularity"
+- Evaluate on test set using pyspark.ml.evaluation.RegressionEvaluator with metricName="rmse"
+- Also compute R2 (metricName="r2")
+- Print RMSE and R2
+- Add a markdown cell explaining what RMSE and R2 mean in this context
+
+SECTION 5 — Model 2: Random Forest Regressor
+- Train pyspark.ml.regression.RandomForestRegressor with featuresCol="features",
+  labelCol="popularity", numTrees=50, seed=42
+- Evaluate on test set — print RMSE and R2
+- Extract and print feature importances as a sorted list pairing feature names
+  with importance scores (use the 10 feature names from the assembly step)
+- Add a markdown cell interpreting which features matter most
+
+SECTION 6 — Hyperparameter Tuning on Random Forest
+- Use pyspark.ml.tuning.ParamGridBuilder to define a grid over:
+  numTrees: [50, 100]
+  maxDepth: [5, 10]
+- Use pyspark.ml.tuning.CrossValidator with:
+  estimator = RandomForestRegressor(featuresCol="features", labelCol="popularity", seed=42)
+  evaluator = RegressionEvaluator(labelCol="popularity", metricName="rmse")
+  numFolds = 3
+- Fit CrossValidator on training data
+- Evaluate best model on test set — print RMSE and R2
+- Print the best hyperparameters found
+- Add a markdown cell explaining why cross-validation matters and what improved
+
+SECTION 7 — Visualization (matplotlib, collected to driver)
+- Collect predictions from best model on test set to pandas:
+  .select("popularity", "prediction").toPandas()
+- Plot a scatter plot: actual popularity (x-axis) vs predicted popularity (y-axis)
+- Add a red diagonal reference line (y=x) to show perfect prediction
+- Title: "Actual vs Predicted Popularity (Random Forest Tuned)"
+- Save as regression_plot.png
+
+SECTION 8 — Analysis and Conclusion Markdown Cell
+Write a markdown cell that addresses:
+- Why you chose Linear Regression and Random Forest for this regression task
+- How training and hyperparameter tuning were performed
+- What the RMSE and R2 values tell you about model effectiveness
+- Which audio features were most predictive of popularity and what that implies
+- One limitation of this regression approach on this dataset
+
+== OUTPUT FORMAT ==
+Generate a complete Jupyter Notebook with alternating markdown cells and code cells
+exactly as described above. Every code cell must be syntactically correct PySpark.
+Do not add sections not listed above.
 ```
 
-📸 **TAKE A SCREENSHOT** of the `bash-4.1#` prompt.
+---
 
-**STEP 3 — Create the HDFS Folder Structure**
-Inside the Docker container:
+### Final Report Assembly (Jeevan)
 
-```bash
-hdfs dfs -mkdir -p /spotify/raw
-hdfs dfs -mkdir -p /spotify/cleaned
-hdfs dfs -ls /spotify
+After Sri Lakshmi and Deepesh hand you their sections, compile everything into the final PDF report following the structure in the [Final Report Structure](#-final-report-structure) section below.
+
+---
+
+## 👤 DEEPESH'S TASKS
+
+### TASK: ML Task 3 — Clustering + All 6 Data Analysis Objectives [Second Hardest]
+
+You are responsible for:
+1. Writing the Clustering ML notebook
+2. Writing the Data Analysis Objectives notebook (all 6 objectives from Phase 1 — now executed in Spark)
+3. Writing your own report sections for both
+
+---
+
+### Notebook 1: `task3_clustering.ipynb`
+
+🤖 **PASTE THIS PROMPT INTO CLAUDE TO GENERATE YOUR NOTEBOOK**
+
+```
+You are helping me complete ML Task 3 (Clustering) for a university big data course — Phase 2.
+
+== STRICT CONSTRAINTS ==
+- Environment: Jupyter Notebook, PySpark (pyspark.ml only)
+- No pandas ML, no sklearn — only pyspark.ml APIs
+- Data loaded from HDFS: hdfs://localhost:9000/spotify/cleaned/spotify_cleaned.csv
+- Notebook must run end-to-end without errors
+- Use inferSchema=True
+
+== EXACT COLUMN INFORMATION — DO NOT DEVIATE ==
+The CSV has exactly 21 columns and 113,400 rows:
+  track_id (string), artists (string), album_name (string), track_name (string),
+  popularity (integer), explicit (boolean — True/False),
+  danceability (float), energy (float), key (integer),
+  loudness (float, negative dB), mode (integer),
+  speechiness (float), acousticness (float), instrumentalness (float),
+  liveness (float), valence (float), tempo (float),
+  time_signature (integer), track_genre (string),
+  duration_minutes (float), is_zero_popularity (boolean)
+
+Columns that do NOT exist: duration_ms, popularity_group
+
+== TASK CONTEXT ==
+ML Task 3 — Clustering:
+- Goal: Group tracks into natural "mood and vibe" clusters using audio features only
+- Input features: danceability, energy, loudness, speechiness, acousticness,
+  instrumentalness, valence, tempo (8 audio features)
+- Output: cluster ID per track (integer)
+- No labels used — unsupervised learning
+
+== NOTEBOOK STRUCTURE ==
+
+SECTION 1 — Setup and Data Loading
+- SparkSession with appName="SpotifyClustering"
+- Load from HDFS with header=True, inferSchema=True
+- Print schema and total row count
+- Drop nulls from all 8 feature columns
+
+SECTION 2 — Feature Assembly and Scaling
+- Assemble 8 columns (danceability, energy, loudness, speechiness, acousticness,
+  instrumentalness, valence, tempo) using VectorAssembler into "features"
+- Apply pyspark.ml.feature.StandardScaler (withMean=True, withStd=True) on features
+  → output column "scaled_features"
+- This is required because loudness has a very different scale than the others
+  (loudness is in dB, typically negative, while others are 0.0–1.0)
+
+SECTION 3 — Determine Optimal K (Elbow Method)
+- Train KMeans (pyspark.ml.clustering.KMeans) with k = 2, 3, 4, 5, 6, 7, 8
+  on scaled_features
+- For each k, compute the Within Set Sum of Squared Errors (WSSSE) using
+  model.summary.trainingCost
+- Collect k and WSSSE values to a Python list, then plot WSSSE vs k as a line
+  chart using matplotlib
+- Save as clustering_elbow.png
+- In a markdown cell, identify and justify your chosen k value based on the elbow plot
+
+SECTION 4 — Final KMeans Model
+- Train KMeans with your chosen k (use k=4 if the elbow is not obvious) and seed=42
+  on scaled_features
+- Add cluster predictions to the dataframe: model.transform(df)
+- Print cluster sizes using groupBy("prediction").count().orderBy("prediction").show()
+
+SECTION 5 — Cluster Evaluation
+- Compute Silhouette Score using pyspark.ml.evaluation.ClusteringEvaluator
+  with featuresCol="scaled_features"
+- Print the silhouette score and interpret it in a markdown cell
+  (range -1 to 1; closer to 1 means clusters are well separated)
+
+SECTION 6 — Cluster Profiling
+- Compute mean values of all 8 audio features per cluster using
+  groupBy("prediction").mean(feature names)
+- Collect result to pandas and display as a formatted table
+- In a markdown cell, describe each cluster's character based on its mean
+  feature values (example: "Cluster 2 has high energy and high danceability
+  — likely pop/dance tracks")
+
+SECTION 7 — Visualization
+- Collect a sample to pandas: .select("prediction", "danceability", "energy", "valence").toPandas()
+- Scatter plot: danceability (x-axis) vs energy (y-axis), colored by prediction (cluster ID)
+- Use a colormap (e.g., plt.scatter with c=pred_col, cmap='tab10')
+- Add a colorbar, title, and axis labels
+- Save as clustering_scatter.png
+
+SECTION 8 — Analysis and Conclusion Markdown Cell
+Write a markdown cell addressing:
+- Why KMeans was chosen for this clustering task
+- What the silhouette score says about cluster quality
+- What each cluster likely represents in terms of music mood or style
+- One limitation of KMeans for this dataset
+
+== OUTPUT FORMAT ==
+Complete Jupyter Notebook with alternating markdown and code cells as described.
+No extra sections. All PySpark code must be syntactically correct.
 ```
 
-📸 **TAKE A SCREENSHOT** showing `/spotify/raw` and `/spotify/cleaned`.
+---
 
-**STEP 4 — Download the Dataset from Kaggle**
-Go to `https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset`, download, and rename the file to `spotify_tracks.csv`.
+### Notebook 2: `task_data_analysis_objectives.ipynb`
 
-**STEP 5 — Copy Raw CSV into HDFS**
-In a NEW local terminal:
+🤖 **PASTE THIS PROMPT INTO CLAUDE TO GENERATE YOUR NOTEBOOK**
 
-```bash
-docker cp /path/to/downloads/spotify_tracks.csv hadoop_phase1:/root/
 ```
+You are helping me complete the Data Analysis Objectives section for a university
+big data course — Phase 2.
 
-Back in your Docker terminal:
+== STRICT CONSTRAINTS ==
+- Environment: Jupyter Notebook, PySpark + matplotlib + seaborn
+- All analysis must be done using PySpark DataFrame operations
+  (groupBy, agg, orderBy, filter, etc.)
+- Visualizations use matplotlib/seaborn ONLY on data collected to the driver
+  via .toPandas() or .collect() AFTER PySpark computation
+- Data loaded from HDFS: hdfs://localhost:9000/spotify/cleaned/spotify_cleaned.csv
+- Notebook must run end-to-end without errors
+- Use inferSchema=True
 
-```bash
-hdfs dfs -put /root/spotify_tracks.csv /spotify/raw/
-hdfs dfs -ls /spotify/raw/
+== EXACT COLUMN INFORMATION — DO NOT DEVIATE ==
+The CSV has exactly 21 columns and 113,400 rows:
+  track_id (string), artists (string), album_name (string), track_name (string),
+  popularity (integer), explicit (boolean — True/False),
+  danceability (float), energy (float), key (integer),
+  loudness (float, negative dB), mode (integer),
+  speechiness (float), acousticness (float), instrumentalness (float),
+  liveness (float), valence (float), tempo (float),
+  time_signature (integer), track_genre (string, 114 unique genres, already lowercase),
+  duration_minutes (float), is_zero_popularity (boolean)
+
+Columns that do NOT exist: duration_ms, popularity_group
+
+== TASK CONTEXT ==
+These are the 6 data analysis objectives defined in Phase 1 that must now be
+addressed using Spark. For each objective: (a) PySpark analysis code,
+(b) a visualization where appropriate, (c) a markdown interpretation cell.
+
+== SIX OBJECTIVES ==
+
+OBJECTIVE 1 — Popularity Distribution Across Genres
+- SparkSession setup with appName="SpotifyObjectives" + load from HDFS
+- Use groupBy("track_genre").agg(avg("popularity").alias("avg_pop"),
+  count("track_id").alias("track_count"))
+- Filter to genres with at least 200 tracks to avoid noise
+- Sort by avg_pop descending, take top 20, collect to pandas
+- Horizontal bar chart, save as obj1_genre_popularity.png
+- Markdown interpretation: Which genres consistently produce high-popularity tracks?
+
+OBJECTIVE 2 — Audio Feature Correlation with Popularity
+- Select columns: popularity, danceability, energy, loudness, valence, tempo,
+  acousticness, instrumentalness, speechiness, duration_minutes
+- Use pyspark.ml.stat.Correlation.corr() — first assemble all 10 columns into
+  a vector using VectorAssembler, then call Correlation.corr(assembled_df, "features")
+- Extract the correlation values for the popularity dimension (first column/row)
+  and pair each value with its feature name
+- Plot a horizontal bar chart of Pearson correlations with popularity, sorted
+  by absolute value, save as obj2_feature_correlation.png
+- Markdown interpretation: Which features have the strongest linear relationship
+  with popularity?
+
+OBJECTIVE 3 — Audio Feature Variation Across Genres
+- First find the top 10 genres by track count:
+  groupBy("track_genre").count().orderBy(desc("count")).limit(10).collect()
+- Filter the dataframe to only these 10 genres
+- For each of these 3 features: valence, energy, tempo —
+  use groupBy("track_genre").agg(avg(feature))
+- Collect to pandas, plot a grouped bar chart (3 feature bars side by side per genre)
+- Save as obj3_genre_audio_features.png
+- Markdown: How do these audio features differ across genres?
+
+OBJECTIVE 4 — Danceability and Energy Profiles Across Genres
+- Use the same top 10 genres from Objective 3
+- groupBy("track_genre").agg(avg("danceability").alias("avg_dance"),
+  avg("energy").alias("avg_energy"))
+- Collect to pandas, scatter plot: avg_dance (x) vs avg_energy (y),
+  with each point labeled by genre name using ax.annotate()
+- Save as obj4_dance_energy.png
+- Markdown: Do genres cluster into distinct danceability-energy profiles?
+
+OBJECTIVE 5 — Most Prolific and Highest-Popularity Artists
+- groupBy("artists").agg(count("track_id").alias("track_count"),
+  avg("popularity").alias("avg_popularity"))
+- Filter to artists with track_count >= 10
+- Two subplots: (a) Top 15 by track_count (horizontal bar); (b) Top 15 by
+  avg_popularity among filtered artists (horizontal bar)
+- Combine into a single 1x2 subplot figure, save as obj5_artists.png
+- Markdown: Are the most prolific artists also the most popular?
+
+OBJECTIVE 6 — Track Duration vs Popularity
+- Create duration buckets using a Spark SQL when().otherwise() expression:
+    < 2.0 minutes → "< 2 min"
+    2.0 to < 3.0 → "2-3 min"
+    3.0 to < 4.0 → "3-4 min"
+    4.0 to < 5.0 → "4-5 min"
+    >= 5.0       → "> 5 min"
+- groupBy("duration_bucket").agg(avg("popularity").alias("avg_pop"),
+  count("*").alias("track_count"))
+- Collect to pandas, order buckets correctly, bar chart of avg_pop per bucket
+- Save as obj6_duration_popularity.png
+- Markdown: Does track duration affect streaming popularity?
+
+FINAL SUMMARY CELL
+- Markdown cell titled "Data Analysis Objectives — Summary of Findings"
+- 6 bullet points, one per objective, 2–3 sentences each
+
+== OUTPUT FORMAT ==
+Complete Jupyter Notebook. All PySpark code syntactically correct.
+All 6 objectives included in order. No extra sections.
 ```
-
-📸 **TAKE A SCREENSHOT** showing `spotify_tracks.csv` in HDFS. (Part A Proof)
-
-**STEP 6 — Upload Cleaned CSV (Do this AFTER Sri Lakshmi finishes)**
-Once Sri Lakshmi gives you `spotify_cleaned.csv`:
-
-```bash
-docker cp /path/to/spotify_cleaned.csv hadoop_phase1:/root/
-```
-
-Back in Docker terminal:
-
-```bash
-hdfs dfs -put /root/spotify_cleaned.csv /spotify/cleaned/
-hdfs dfs -ls /spotify/cleaned/
-```
-
-📸 **TAKE A SCREENSHOT** showing `spotify_cleaned.csv` in HDFS. (Part B Proof)
 
 ---
 
@@ -393,460 +513,198 @@ hdfs dfs -ls /spotify/cleaned/
 
 🚨 **READ THIS BEFORE YOU TOUCH ANYTHING**
 
-1. Join the Teams workspace first.
-2. Clone the GitHub repo.
-3. Do NOT start until Jeevan sends you `spotify_tracks.csv`.
-4. Post an update in Teams after EVERY operation you finish.
-5. When you finish, post `spotify_cleaned.csv` in the `#file-handoffs` Teams channel.
-6. Push your notebook to GitHub when done.
-7. If you get an error, paste it in `#task-4-cleaning` immediately. Do not sit on it. Someone will help you fast.
+1. Do NOT start until Jeevan confirms HDFS is running and posts the verified path.
+2. Test your HDFS connection before writing any ML code (see Environment Setup above).
+3. Push your notebook to GitHub when done.
+4. Send Jeevan your finished report section.
 
-### TASK 2 — Data Sources [15 pts] + TASK 4 — Data Cleaning [25 pts]
+### Notebook: `task2_classification.ipynb`
 
-**Before You Start:**
-Install Jupyter and required libraries: `pip install notebook pandas matplotlib seaborn`
-Launch Jupyter: `jupyter notebook`
-Create a new notebook called `task4_cleaning.ipynb` next to `spotify_tracks.csv`.
+🤖 **PASTE THIS PROMPT INTO CLAUDE TO GENERATE YOUR NOTEBOOK**
 
-🤖 **STEP 1 — PASTE THIS ENTIRE PROMPT INTO CLAUDE ON YOUR MACHINE**
-*(Copy everything in the block below and feed it to Claude)*
-
-```text
-You are helping me complete Task 2 (Data Sources) and Task 4 (Data Cleaning) for a university big data course project called Phase 1.
-
-== PROJECT CONTEXT ==
-- Topic: Spotify Tracks Dataset — Music Popularity and Audio Feature Analysis
-- Dataset file I already have: spotify_tracks.csv
-- Team size: 3 people. N=3, so we need exactly 6 cleaning operations total.
-- Environment: Jupyter Notebook (local), Python
-- Libraries allowed: pandas, matplotlib, seaborn only (no sklearn)
-
-== TASK 2 — DATA SOURCES REPORT SECTION ==
-Write a professional report section titled "2. Data Sources" that includes:
-- Full citation: PandyaM. (2022). Spotify Tracks Dataset. Kaggle. https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset
-- Description of what the dataset contains: ~114,000 Spotify tracks, 125+ genres.
-- Key columns: track_id, artists, album_name, track_name, popularity, duration_ms, explicit, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, time_signature, track_genre
-- Why this dataset fits our problem
-- Confirmation that it exceeds the 100,000 row minimum requirement
-
-== TASK 4 — DATA CLEANING NOTEBOOK ==
-Create a complete, runnable Jupyter Notebook called task4_cleaning.ipynb.
-For each of the 6 operations below, generate:
-1. A markdown cell explaining WHAT we are doing and WHY
-2. The full Python code cell (follow the sample style shown below exactly)
-3. A markdown cell showing before/after result or what to expect
-
-OPERATION 1 — Load and Inspect the Dataset
-- Import pandas, matplotlib.pyplot, seaborn
-- Load spotify_tracks.csv using pandas
-- Drop the unnamed index column (Unnamed: 0) if it exists — this is a leftover artifact
-- Print shape, dtypes, first 5 rows, and df.describe()
-Sample style:
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-df = pd.read_csv('spotify_tracks.csv')
-if 'Unnamed: 0' in df.columns:
-    df = df.drop(columns=['Unnamed: 0'])
-    print("Dropped unnamed index column")
-print("Shape:", df.shape)
-print("\nData Types:")
-print(df.dtypes)
-print("\nFirst 5 rows:")
-df.head()
-
-OPERATION 2 — Handle Missing Values
-- Count and display nulls per column as a table
-- Drop rows where artists, track_name, or track_genre is null
-- Print how many rows were removed and how many remain
-Sample style:
-print("Missing values per column:")
-print(df.isnull().sum())
-rows_before = len(df)
-df = df.dropna(subset=['artists', 'track_name', 'track_genre'])
-rows_after = len(df)
-print(f"\nRows removed: {rows_before - rows_after}")
-print(f"Rows remaining: {rows_after}")
-
-OPERATION 3 — Duplicate Analysis and Removal
-- First analyse duplicates TWO ways before removing anything:
-  1. Count duplicates by track_id (same song ID)
-  2. Count exact duplicate rows across all columns
-- Print both counts and explain the difference in a comment
-- Only remove exact duplicate rows (safe — preserves valid multi-genre track entries)
-- Print rows before and after removal
-Sample style:
-dup_id = df.duplicated(subset='track_id').sum()
-dup_exact = df.duplicated().sum()
-print(f"Duplicate track_id entries: {dup_id}")
-print(f"Exact duplicate rows: {dup_exact}")
-print("Note: track_id duplicates may represent the same song appearing in multiple genres or playlists.")
-print("Therefore, we only remove exact duplicate rows to preserve valid data.")
-rows_before = len(df)
-df = df.drop_duplicates()
-rows_after = len(df)
-print(f"\nRows removed: {rows_before - rows_after}")
-print(f"Rows remaining: {rows_after}")
-
-OPERATION 4 — Fix Data Types and Convert explicit Column
-- Convert duration_ms to duration_minutes by dividing by 60000, round to 2 decimals
-- Drop the original duration_ms column after conversion
-- Convert explicit column to proper boolean using astype(bool)
-- Print the new duration_minutes column and value counts of explicit to confirm
-Sample style:
-df['duration_minutes'] = (df['duration_ms'] / 60000).round(2)
-df = df.drop(columns=['duration_ms'])
-df['explicit'] = df['explicit'].astype(bool)
-print("New column: duration_minutes")
-print(df[['duration_minutes', 'explicit']].head())
-print("\nexplicit value counts:", df['explicit'].value_counts())
-
-OPERATION 5 — Flag Zero-Popularity Tracks and Remove Duration Outliers
-- Create a new boolean column called is_zero_popularity that is True when popularity == 0
-- Print how many tracks have zero popularity and what percentage that is of the total
-- Print df['popularity'].describe()
-- Also remove tracks where duration_minutes > 15 (these are clearly bad data)
-- Print how many rows were removed
-Sample style:
-df['is_zero_popularity'] = df['popularity'] == 0
-zero_count = df['is_zero_popularity'].sum()
-total = len(df)
-print(f"Zero-popularity tracks: {zero_count} ({100*zero_count/total:.1f}% of dataset)")
-print(df['popularity'].describe())
-rows_before = len(df)
-df = df[df['duration_minutes'] <= 15]
-print(f"\nDuration outliers removed: {rows_before - len(df)}")
-print(f"Rows remaining: {len(df)}")
-
-OPERATION 6 — Normalize track_genre Column
-- Strip whitespace and convert track_genre to lowercase using .str.strip().str.lower()
-- Print unique genre count before and after
-- Plot top 15 genres by track count as a bar chart, save as genre_distribution.png
-Sample style:
-print(f"Unique genres before: {df['track_genre'].nunique()}")
-df['track_genre'] = df['track_genre'].str.strip().str.lower()
-print(f"Unique genres after: {df['track_genre'].nunique()}")
-top_genres = df['track_genre'].value_counts().head(15)
-plt.figure(figsize=(10,6))
-top_genres.plot(kind='bar', color='steelblue')
-plt.title('Top 15 Genres by Track Count')
-plt.xlabel('Genre')
-plt.ylabel('Number of Tracks')
-plt.xticks(rotation=45, ha='right')
-plt.tight_layout()
-plt.savefig('genre_distribution.png')
-plt.show()
-
-FINAL STEP — Save the Cleaned Dataset
-Sample style:
-df.to_csv('spotify_cleaned.csv', index=False)
-print(f"Cleaned dataset saved as spotify_cleaned.csv")
-print(f"Dataset shape after cleaning: {df.shape}")
-print(f"The cleaned dataset contains {df.shape[0]:,} rows and {df.shape[1]} columns, suitable for large-scale analysis.")
-
-== IMPORTANT RULES ==
-- Every single cell must run without any errors
-- Use clear markdown headers between each section
-- The notebook must be fully self-contained
-- Match the sample style exactly — same variable names, same print messages, same file names
 ```
+You are helping me complete ML Task 2 (Classification) for a university big data
+course — Phase 2.
 
-📋 **STEP 2 — SAMPLE REFERENCE CODE FOR TASK 4**
-*(Use this to verify Claude's output)*
+== STRICT CONSTRAINTS ==
+- Environment: Jupyter Notebook, PySpark (pyspark.ml only)
+- No pandas ML, no sklearn — only pyspark.ml APIs
+- Data loaded from HDFS: hdfs://localhost:9000/spotify/cleaned/spotify_cleaned.csv
+- Notebook must run end-to-end without errors
+- Use inferSchema=True
 
-```python
-# OPERATION 1
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+== EXACT COLUMN INFORMATION — DO NOT DEVIATE ==
+The CSV has exactly 21 columns and 113,400 rows:
+  track_id (string), artists (string), album_name (string), track_name (string),
+  popularity (integer, 0-100), explicit (boolean — True/False),
+  danceability (float), energy (float), key (integer),
+  loudness (float, negative dB), mode (integer 0 or 1),
+  speechiness (float), acousticness (float), instrumentalness (float),
+  liveness (float), valence (float), tempo (float),
+  time_signature (integer), track_genre (string, 114 unique genres),
+  duration_minutes (float), is_zero_popularity (boolean)
 
-df = pd.read_csv('spotify_tracks.csv')
-if 'Unnamed: 0' in df.columns:
-    df = df.drop(columns=['Unnamed: 0'])
-    print("Dropped unnamed index column")
+Columns that do NOT exist: duration_ms, popularity_group
+Note: explicit and is_zero_popularity load as BooleanType with inferSchema=True.
+VectorAssembler CANNOT handle BooleanType — cast to integer if you use them as features.
 
-print("Shape:", df.shape)
-print("\nData Types:")
-print(df.dtypes)
-print("\nFirst 5 rows:")
-df.head()
+== TASK CONTEXT ==
+ML Task 2 — Classification:
+- Goal: Classify each track into one of three popularity tiers:
+  Low (0–33), Medium (34–66), High (67–100)
+- Input features: danceability, energy, loudness, speechiness, acousticness,
+  instrumentalness, liveness, valence, tempo, duration_minutes,
+  and track_genre (encoded as numeric index via StringIndexer)
+- Target: 3-class integer label (0=Low, 1=Medium, 2=High) derived from popularity
 
-# OPERATION 2
-print("Missing values per column:")
-print(df.isnull().sum())
-rows_before = len(df)
-df = df.dropna(subset=['artists', 'track_name', 'track_genre'])
-rows_after = len(df)
-print(f"\nRows removed: {rows_before - rows_after}")
-print(f"Rows remaining: {rows_after}")
+== NOTEBOOK STRUCTURE ==
 
-# OPERATION 3
-dup_id = df.duplicated(subset='track_id').sum()
-dup_exact = df.duplicated().sum()
-print(f"Duplicate track_id entries: {dup_id}")
-print(f"Exact duplicate rows: {dup_exact}")
-print("Note: track_id duplicates may represent the same song appearing in multiple genres or playlists.")
-print("Therefore, we only remove exact duplicate rows to preserve valid data.")
-rows_before = len(df)
-df = df.drop_duplicates()
-rows_after = len(df)
-print(f"\nRows removed: {rows_before - rows_after}")
-print(f"Rows remaining: {rows_after}")
+SECTION 1 — Setup and Data Loading
+- SparkSession with appName="SpotifyClassification"
+- Load from HDFS, print schema and total row count
+- Drop rows where popularity is null
 
-# OPERATION 4
-df['duration_minutes'] = (df['duration_ms'] / 60000).round(2)
-df = df.drop(columns=['duration_ms'])
-df['explicit'] = df['explicit'].astype(bool)
-print("New column: duration_minutes")
-print(df[['duration_minutes', 'explicit']].head())
-print("\nexplicit value counts:", df['explicit'].value_counts())
+SECTION 2 — Create Target Label Column
+- Use pyspark.sql.functions.when().otherwise() to create "popularity_label":
+    popularity <= 33  → integer 0  (Low)
+    popularity <= 66  → integer 1  (Medium)
+    popularity > 66   → integer 2  (High)
+  Use col("popularity") in the conditions. Cast result to IntegerType.
+- Show label distribution: groupBy("popularity_label").count().orderBy("popularity_label").show()
+- In a markdown cell, note any class imbalance you observe
 
-# OPERATION 5
-df['is_zero_popularity'] = df['popularity'] == 0
-zero_count = df['is_zero_popularity'].sum()
-total = len(df)
-print(f"Zero-popularity tracks: {zero_count} ({100*zero_count/total:.1f}% of dataset)")
-print(df['popularity'].describe())
-rows_before = len(df)
-df = df[df['duration_minutes'] <= 15]
-print(f"\nDuration outliers removed: {rows_before - len(df)}")
-print(f"Rows remaining: {len(df)}")
+SECTION 3 — Encode track_genre and Assemble Features
+- Use StringIndexer to encode track_genre → track_genre_index (string → float index)
+  inputCol="track_genre", outputCol="track_genre_index"
+- Assemble these 11 columns into "features" using VectorAssembler:
+  danceability, energy, loudness, speechiness, acousticness,
+  instrumentalness, liveness, valence, tempo, duration_minutes, track_genre_index
+- Do NOT include explicit, is_zero_popularity, key, mode, time_signature,
+  or non-numeric ID/name columns in features
+- Show first 5 rows with features and popularity_label columns
 
-# OPERATION 6
-print(f"Unique genres before: {df['track_genre'].nunique()}")
-df['track_genre'] = df['track_genre'].str.strip().str.lower()
-print(f"Unique genres after: {df['track_genre'].nunique()}")
-top_genres = df['track_genre'].value_counts().head(15)
-plt.figure(figsize=(10,6))
-top_genres.plot(kind='bar', color='steelblue')
-plt.title('Top 15 Genres by Track Count')
-plt.xlabel('Genre')
-plt.ylabel('Number of Tracks')
-plt.xticks(rotation=45, ha='right')
-plt.tight_layout()
-plt.savefig('genre_distribution.png')
-plt.show()
+SECTION 4 — Train/Test Split
+- randomSplit([0.8, 0.2], seed=42)
+- Print train and test row counts
 
-# FINAL STEP
-df.to_csv('spotify_cleaned.csv', index=False)
-print(f"Cleaned dataset saved as spotify_cleaned.csv")
-print(f"Dataset shape after cleaning: {df.shape}")
-print(f"The cleaned dataset contains {df.shape[0]:,} rows and {df.shape[1]} columns, suitable for large-scale analysis.")
+SECTION 5 — Model 1: Logistic Regression (Multinomial)
+- Train pyspark.ml.classification.LogisticRegression with:
+  featuresCol="features", labelCol="popularity_label",
+  family="multinomial", maxIter=100
+- Evaluate on test set using MulticlassClassificationEvaluator:
+  metricName="accuracy" → print accuracy
+  metricName="f1"       → print F1 score
+- Markdown cell: interpret what accuracy and F1 mean for a 3-class problem
+
+SECTION 6 — Model 2: Random Forest Classifier
+- Train pyspark.ml.classification.RandomForestClassifier with:
+  featuresCol="features", labelCol="popularity_label", numTrees=50, seed=42
+- Evaluate on test set — print accuracy and F1
+- Extract and print feature importances sorted descending
+  (pair the 11 feature names from Section 3 with importance scores)
+- Markdown cell: which features matter most for predicting popularity tier?
+
+SECTION 7 — Confusion Matrix (Collected to Driver)
+- Use the better-performing model's predictions
+- Collect predictions and true labels to pandas:
+  .select("popularity_label", "prediction").toPandas()
+- Use pandas to build a 3x3 confusion matrix (groupby or crosstab)
+- Plot it as a seaborn heatmap (annot=True, fmt="d")
+- Label axes: x-axis "Predicted" with ticks [Low, Medium, High];
+              y-axis "Actual" with ticks [Low, Medium, High]
+- Save as classification_confusion_matrix.png
+- Markdown: Which classes does the model confuse most often?
+
+SECTION 8 — Analysis and Conclusion Markdown Cell
+Write a markdown cell addressing:
+- Why you chose Logistic Regression and Random Forest for this classification task
+- How you handled the multi-class target (3 tiers) and any class imbalance
+- What the accuracy and F1 scores say about model effectiveness
+- Which features were most predictive of popularity tier
+- One limitation of this classification approach
+
+== OUTPUT FORMAT ==
+Complete Jupyter Notebook with alternating markdown and code cells as described.
+All PySpark code must be syntactically correct. No extra sections.
 ```
-
-📤 **Hand Off:** Send `spotify_cleaned.csv` to Deepesh and Jeevan via **Teams `#file-handoffs`** — do not send via WhatsApp or email so there is a clear record.
-📸 **Screenshots Required:** Screenshot every code block + output and put them in `screenshots/`.
-
----
-
-## 👤 DEEPESH'S TASKS
-
-🚨 **READ THIS BEFORE YOU TOUCH ANYTHING**
-
-1. Join the Teams workspace first.
-2. Clone the GitHub repo.
-3. Do NOT start until Sri Lakshmi posts `spotify_cleaned.csv`.
-4. Post an update in Teams after EVERY operation you finish.
-5. When you finish, post all 4 chart images + your notebook in Teams.
-6. Push your notebook to GitHub when done.
-7. If you get an error, paste it in `#task-5-eda` immediately. Do not sit on it. Someone will help you fast.
-
-### TASK 5 — Exploratory Data Analysis [25 pts]
-
-**Before You Start:**
-Install dependencies: `pip install notebook pandas matplotlib seaborn numpy`
-Launch Jupyter: `jupyter notebook`
-Create a new notebook called `task5_eda.ipynb` next to `spotify_cleaned.csv`.
-
-🤖 **STEP 1 — PASTE THIS ENTIRE PROMPT INTO CLAUDE ON YOUR MACHINE**
-
-```text
-You are helping me complete Task 5 (Exploratory Data Analysis) for a university big data course project called Phase 1.
-
-== PROJECT CONTEXT ==
-- Topic: Spotify Tracks Dataset — Music Popularity and Audio Feature Analysis
-- My input file: spotify_cleaned.csv
-- Team size: 3 people. N=3, so we need exactly 6 EDA operations total.
-- Environment: Jupyter Notebook (local), Python
-- Libraries allowed: pandas, matplotlib, seaborn, numpy only (no sklearn)
-
-== YOUR JOB ==
-Create a complete, runnable Jupyter Notebook called task5_eda.ipynb.
-For each of the 6 EDA operations below, generate:
-1. A markdown cell explaining what this analysis is, what it reveals, and why it matters
-2. The full Python code cell
-3. A markdown interpretation cell with guiding questions to fill in after running
-
-EDA OPERATION 1 — Summary Statistics (Non-graphical)
-- Import libraries and load spotify_cleaned.csv
-- Run df.describe().round(2)
-- Compute skewness and kurtosis for: popularity, danceability, energy, tempo, duration_minutes
-
-EDA OPERATION 2 — Missingness and Zero-Popularity Analysis (Non-graphical)
-- Show remaining null counts per column
-- Calculate percentage of tracks where is_zero_popularity == True
-- Compute mean popularity for zero vs non-zero tracks using groupby
-
-EDA OPERATION 3 — Popularity Distribution (Graphical)
-- Histogram of popularity with bins=50 and KDE overlay, mean line (red), median line (orange)
-- Save as eda_plot_1.png
-
-EDA OPERATION 4 — Clustered Correlation Heatmap of Audio Features (Graphical)
-- Compute correlation matrix for 8 audio features: danceability, energy, loudness, speechiness, acousticness, instrumentalness, valence, tempo
-- Plot using sns.clustermap (use annot=True, cmap='coolwarm', figsize=(8,8))
-- Save as eda_plot_2.png
-
-EDA OPERATION 5 — Top Genres by Average Popularity (Graphical)
-- Mean popularity per track_genre, top 15, horizontal bar chart, save as eda_plot_3.png
-
-EDA OPERATION 6 — Audio Feature Distribution by Popularity Group (Graphical)
-- Create a popularity_group column using pd.cut with bins=[0,30,70,100], include_lowest=True, and labels=['Low','Medium','High']
-- For each of these 4 features: danceability, energy, valence, acousticness — plot a boxplot showing distribution across the 3 popularity groups
-- Save all 4 boxplots in a single 2x2 figure as eda_plot_4.png
-
-FINAL SUMMARY CELL
-- Add a final markdown cell titled 'EDA Summary and Implications for Phase 2'
-- Include 6 bullet points, one per operation
-```
-
-📋 **STEP 2 — SAMPLE REFERENCE CODE FOR TASK 5**
-*(Use this to verify Claude's output)*
-
-```python
-# EDA OPERATION 1
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import numpy as np
-
-df = pd.read_csv('spotify_cleaned.csv')
-
-print("=== Descriptive Statistics ===")
-print(df.describe().round(2))
-
-print("\n=== Skewness and Kurtosis for Key Columns ===")
-cols = ['popularity', 'danceability', 'energy', 'tempo', 'duration_minutes']
-for col in cols:
-    print(f"{col}: skewness={df[col].skew():.3f}, kurtosis={df[col].kurtosis():.3f}")
-
-# EDA OPERATION 2
-print("=== Remaining Null Values ===")
-print(df.isnull().sum())
-
-zero_pct = 100 * df['is_zero_popularity'].sum() / len(df)
-print(f"\nPercentage of zero-popularity tracks: {zero_pct:.1f}%")
-
-print("\n=== Mean Popularity: Zero vs Non-Zero ===")
-print(df.groupby('is_zero_popularity')['popularity'].mean())
-
-# EDA OPERATION 3
-plt.figure(figsize=(10, 5))
-sns.histplot(df['popularity'], bins=50, kde=True, color='steelblue')
-plt.axvline(df['popularity'].mean(), color='red', linestyle='--', label=f"Mean: {df['popularity'].mean():.1f}")
-plt.axvline(df['popularity'].median(), color='orange', linestyle='--', label=f"Median: {df['popularity'].median():.1f}")
-plt.title('Distribution of Track Popularity')
-plt.xlabel('Popularity Score')
-plt.ylabel('Number of Tracks')
-plt.legend()
-plt.tight_layout()
-plt.savefig('eda_plot_1.png')
-plt.show()
-
-# EDA OPERATION 4
-audio_features = ['danceability', 'energy', 'loudness', 'speechiness',
-                  'acousticness', 'instrumentalness', 'valence', 'tempo']
-corr = df[audio_features].corr()
-clustermap = sns.clustermap(corr, annot=True, cmap='coolwarm', figsize=(8, 8))
-clustermap.savefig('eda_plot_2.png')
-plt.show()
-
-# EDA OPERATION 5
-top_genres = (df.groupby('track_genre')['popularity'].mean().sort_values(ascending=False).head(15))
-plt.figure(figsize=(10, 7))
-colors = sns.color_palette("Blues_r", len(top_genres))
-top_genres.plot(kind='barh', color=colors)
-plt.title('Top 15 Genres by Average Track Popularity')
-plt.xlabel('Average Popularity Score')
-plt.ylabel('Genre')
-plt.gca().invert_yaxis()
-plt.tight_layout()
-plt.savefig('eda_plot_3.png')
-plt.show()
-
-# EDA OPERATION 6
-# include_lowest=True ensures tracks with popularity=0 are included in 'Low' group
-df['popularity_group'] = pd.cut(
-    df['popularity'],
-    bins=[0, 30, 70, 100],
-    labels=['Low', 'Medium', 'High'],
-    include_lowest=True
-)
-
-features = ['danceability', 'energy', 'valence', 'acousticness']
-fig, axes = plt.subplots(2, 2, figsize=(12, 10))
-axes = axes.flatten()
-
-for i, feature in enumerate(features):
-    sns.boxplot(x='popularity_group', y=feature, data=df, ax=axes[i],
-                hue='popularity_group', palette='Blues', legend=False, orient='v')
-    axes[i].set_title(f'{feature.capitalize()} by Popularity Group')
-    axes[i].set_xlabel('Popularity Group')
-    axes[i].set_ylabel(feature.capitalize())
-
-plt.suptitle('Audio Feature Distribution by Popularity Group', fontsize=14, y=1.02)
-plt.tight_layout()
-plt.savefig('eda_plot_4.png')
-plt.show()
-```
-
-📤 **Hand Off:** Send the following to Jeevan via **Teams `#file-handoffs`** — do not send via WhatsApp or email so there is a clear record:
-- `task5_eda.ipynb` — the full EDA notebook
-- `eda_plot_1.png`, `eda_plot_2.png`, `eda_plot_3.png`, `eda_plot_4.png` — the four saved chart images
-- The **"EDA Summary and Implications for Phase 2"** markdown cell content → copy the text and paste it directly into the team report
-
-📸 **Screenshots Required:** Screenshot every code block + output and put them in `screenshots/`.
 
 ---
 
 ## 📄 FINAL REPORT STRUCTURE
 
-Assemble the final PDF report exactly like this:
+Assemble the final PDF report exactly like this. **Do NOT use AI or code to generate the PDF.** Write it manually in Word or Google Docs, export to PDF.
 
-1. **Problem Statement**
-   * Project title
-   * High-level problem statement + stakeholders
-   * 3 ML problem statements (one per team member)
-   * 6 data analysis objectives
-   * Input → Output specification
+### 1. Introduction / Problem Statement *(from Phase 1 — brief recap)*
+- Project title
+- Problem statement and stakeholders
+- 3 ML tasks (recap from Phase 1)
+- 6 analysis objectives (recap from Phase 1)
 
-2. **Data Sources**
-   * Dataset citation and link
-   * Dataset description (columns, size, spanning 125+ genres across multiple decades)
-   * Justification for dataset choice
+### 2. Data Sources *(from Phase 1 — brief recap only)*
+- Dataset citation
+- Cleaned dataset specs: 113,400 rows, 21 columns (list the column names)
 
-3. **Hadoop / HDFS**
-   * HDFS commands used
-   * Screenshots: Hadoop running, `/spotify/raw/`, `/spotify/cleaned/`
+### 3. Spark ML — Task 1: Regression *(Jeevan writes)*
+- Algorithm justification: why Linear Regression and Random Forest
+- Training procedure and hyperparameter tuning description
+- Results: RMSE and R2 for each model (pre-tuning vs post-tuning)
+- Feature importance table (10 features)
+- Insert: `regression_plot.png`
+- Analysis: what this tells us about predicting popularity
 
-4. **Data Cleaning**
-   * Paste from `task4_cleaning.ipynb` (all 6 operations with markdown explanations and screenshots)
+### 4. Spark ML — Task 2: Classification *(Sri Lakshmi writes)*
+- Algorithm justification: why Logistic Regression and Random Forest
+- Training procedure and class imbalance notes
+- Results: Accuracy and F1 for each model
+- Feature importance table (11 features)
+- Insert: `classification_confusion_matrix.png`
+- Analysis: what this tells us about predicting popularity tier
 
-5. **Exploratory Data Analysis**
-   * Paste from `task5_eda.ipynb` (all 6 operations with interpretations and the 4 saved plot images)
+### 5. Spark ML — Task 3: Clustering *(Deepesh writes)*
+- Algorithm justification: why KMeans
+- Elbow method and chosen k
+- Silhouette score and interpretation
+- Cluster profiles (mean feature values per cluster)
+- Insert: `clustering_elbow.png`, `clustering_scatter.png`
+- Analysis: what each cluster likely represents musically
+
+### 6. Data Analysis Objectives *(Deepesh writes)*
+- Objective 1 through 6
+- Each: description of analysis, Spark approach, key finding, insert chart
+- Final summary of cross-objective insights
+
+### 7. Conclusion
+- Summary of all 3 ML results
+- Which model performed best and why
+- How the findings address the Phase 1 problem statement
+- Limitations and potential Phase 3 directions
+
+### 8. Personal Statements *(Required — each member writes their own)*
+Each member must include:
+- What you personally contributed to Phase 2
+- What you learned
+- Your signature
+
+> Example format:
+> "I, [Name], personally completed [tasks]. I confirm that my submitted work is my own and not generated by AI. Signature: _______________"
 
 ---
 
 ## 📌 IMPORTANT REMINDERS
 
-* **Deadline:** March 14, 2026 (Saturday) 11:59 PM EST. Late penalty is 10% per day. No submissions accepted after 3 days late.
 * **Submission Format:** A single `.zip` file containing:
-  1. `Report.pdf` — written manually in Word/Google Docs and exported to PDF. Must include screenshots of every code cell + output for Tasks 4 & 5, plus HDFS screenshots for Task 3. Do NOT use AI or code to generate the PDF.
-  2. `task4_cleaning.ipynb`
-  3. `task5_eda.ipynb`
-* **Zip file name format:** `ubid1_ubid2_ubid3_phase_1.zip`
-* **⚠️ Phase Lock:** After Phase 1 submission you cannot change your dataset or problem statement. Phase 2 builds directly on this. Make sure everyone agrees on the dataset and ML tasks before submitting.
-* **Raw data must stay in HDFS** even after uploading the cleaned version. Do not delete it.
-* **Jupyter Notebooks** are required — do not submit plain .py files for Tasks 4 and 5.
-* **GitHub repo** must be shared with your TA before submission. Commit all notebooks and screenshots. **Do NOT commit CSV files** — they are too large for GitHub.
-* **Work Division file:** Must be signed by all 3 members.
-* **Meetings Log:** Keep a short log of when you met and what was decided. The TA will check it.
+  1. `Report.pdf` — written manually, exported to PDF. Must include screenshots of every code block + output for all three notebooks, plus all chart images.
+  2. `task1_regression.ipynb`
+  3. `task2_classification.ipynb`
+  4. `task3_clustering.ipynb`
+  5. `task_data_analysis_objectives.ipynb`
+  6. Video presentation file (5 minutes, all members speaking)
+* **Zip file name format:** `ubid1_ubid2_ubid3_phase_2.zip`
+* **Do NOT change your dataset or problem statements** — Phase 2 is locked to Phase 1 definitions.
+* **All notebooks must load data from HDFS**, not from a local CSV file.
+* **No hardcoded local paths.** The notebook must be runnable on the grader's machine.
+* **GitHub repo** must be updated with all Phase 2 notebooks. Do NOT commit CSV files.
+* **Every code cell must be screenshot** for the report — run each cell and screenshot the output as you go.
+* **Personal statement with signature** is required from all 3 members in the report.
+* **It is your responsibility** to verify that nothing you submit is AI-generated output presented as your own analysis. Claude prompts above are starting points — understand every line before submitting.
+* **In-person Demo Day (CSE 587):** All three members must be present. Prepare to explain your code and results live.
